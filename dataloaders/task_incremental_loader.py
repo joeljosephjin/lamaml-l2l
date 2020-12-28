@@ -45,7 +45,7 @@ class IncrementalLoader:
             raise Exception("No more tasks.")
 
         p = self.sample_permutations[self._current_task]
-        # print(self._current_task, len(p), len(self.train_dataset)) # {0,1,..} 1000 20
+        # print(len(self.train_dataset), self._current_task, len(p)) # 20 {0,1,..} 1000
         x_train, y_train = self.train_dataset[self._current_task][1][p], self.train_dataset[self._current_task][2][p]
         x_test, y_test = self.test_dataset[self._current_task][1], self.test_dataset[self._current_task][2]
 
@@ -120,6 +120,7 @@ class IncrementalLoader:
 
         # for every task, accumulate a shuffled set of samples_per_task
         for t in range(len(self.train_dataset)):
+            # t is task; t - {0,1,..,20}
             N = self.train_dataset[t][1].size(0)
             if self._opt.samples_per_task <= 0:
                 n = N
