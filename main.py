@@ -206,6 +206,7 @@ def main():
     args.log_dir, args.tf_dir = misc_utils.log_dir(args, timestamp) # stores args into "training_parameters.json"
 
     # load model from the 'model' folder
+    # task_incremental is default (for mnist) and class_incremental for cifar and imagenet
     Model = importlib.import_module('model.' + args.model)
     # create the model neural net
     model = Model.Net(n_inputs, n_outputs, n_tasks, args)

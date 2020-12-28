@@ -48,6 +48,8 @@ class IncrementalLoader:
         x_train, y_train = self.train_dataset[self._current_task][1][p], self.train_dataset[self._current_task][2][p]
         x_test, y_test = self.test_dataset[self._current_task][1], self.test_dataset[self._current_task][2]
 
+        # print(len(x_train)) # = 1000
+
         train_loader = self._get_loader(x_train, y_train, mode="train")
         test_loader = self._get_loader(x_test, y_test, mode="test")
 
@@ -103,12 +105,13 @@ class IncrementalLoader:
             num_workers=self._workers
         )
 
-
+    # load from the '.pt' file to self.train_dataset and self.test_dataset
     def _setup_data(self, class_order_type=False, seed=1, increment=10, validation_split=0.):
         # FIXME: handles online loading of images
         torch.manual_seed(seed)
 
         # print('been here', self._opt.data_path, self._opt.dataset + ".pt")
+        # this is probably what crashes the RAM
         self.train_dataset, self.test_dataset = torch.load(os.path.join(self._opt.data_path, self._opt.dataset + ".pt"))
         # print('passed here')
         self.sample_permutations = []
