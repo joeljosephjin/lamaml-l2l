@@ -2,7 +2,7 @@
 
 Trying to implement La-MAML in Learn2Learn library framework.
 
-'''
+```
 Set seed 0
 /usr/local/lib/python3.6/dist-packages/torch/nn/modules/container.py:434: UserWarning: Setting attributes on ParameterList is not supported.
   warnings.warn("Setting attributes on ParameterList is not supported.")
@@ -31,4 +31,4 @@ Final Results:-
  Total Accuracy: 0.6604299545288086 
  Individual Accuracy: [tensor(0.6190), tensor(0.6631), tensor(0.6915), tensor(0.7214), tensor(0.7241), tensor(0.7297), tensor(0.7309), tensor(0.7206), tensor(0.7257), tensor(0.7163), tensor(0.7133), tensor(0.6859), tensor(0.6777), tensor(0.6678), tensor(0.6570), tensor(0.6263), tensor(0.6082), tensor(0.5797), tensor(0.5336), tensor(0.4168)]
 logs//lamaml/test_lamaml-2020-12-28_13-51-14-6383/0/results: {'expt_name': 'test_lamaml', 'model': 'lamaml', 'arch': 'linear', 'n_hiddens': 100, 'n_layers': 2, 'xav_init': False, 'glances': 5, 'n_epochs': 1, 'batch_size': 10, 'replay_batch_size': 10.0, 'memories': 200, 'lr': 0.001, 'cuda': False, 'seed': 0, 'log_every': 100, 'log_dir': 'logs//lamaml/test_lamaml-2020-12-28_13-51-14-6383/0', 'tf_dir': 'logs//lamaml/test_lamaml-2020-12-28_13-51-14-6383/0/tfdir', 'calc_test_accuracy': False, 'data_path': 'data/', 'loader': 'task_incremental_loader', 'samples_per_task': 50, 'shuffle_tasks': False, 'classes_per_it': 4, 'iterations': 5000, 'dataset': 'mnist_rotations', 'workers': 3, 'validation': 0.0, 'class_order': 'old', 'increment': 5, 'test_batch_size': 100000, 'opt_lr': 0.3, 'opt_wt': 0.1, 'alpha_init': 0.15, 'learn_lr': True, 'sync_update': False, 'grad_clip_norm': 2.0, 'cifar_batches': 3, 'use_old_task_memory': True, 'second_order': False, 'n_memories': 0, 'memory_strength': 0, 'steps_per_sample': 1, 'gamma': 1.0, 'beta': 1.0, 's': 1, 'batches_per_example': 1, 'bgd_optimizer': 'bgd', 'optimizer_params': '{}', 'train_mc_iters': 5, 'std_init': 0.05, 'mean_eta': 1, 'fisher_gamma': 0.95} # val: 0.455 0.660 0.205 0.259 # 55.097007274627686
-'''
+```
