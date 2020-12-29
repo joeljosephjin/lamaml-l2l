@@ -92,6 +92,7 @@ class Net(BaseNet):
                 self.current_task = t
 
             # get batch_size from the shape of x
+            # print(x.shape) # torch.Size([10, 784])
             batch_sz = x.shape[0]
             # will want to store batch loss in a list
             meta_losses = [0 for _ in range(batch_sz)]
