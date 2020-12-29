@@ -78,12 +78,13 @@ class Net(BaseNet):
             # selecting a random data tuple (x, y)
             x, y = x[perm], y[perm]
 
-            # so each it of this loop is an epoch
+            # so each iter of this loop is an epoch
             self.epoch += 1
             # set {opt_lr, opt_wt, net, net.alpha_lr} (all 4) as zero_grads
             self.zero_grads()
 
             # current_task=??
+            # t is task_info
             if t != self.current_task:
                 # M=??
                 self.M = self.M_new

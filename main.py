@@ -13,8 +13,6 @@ from metrics.metrics import confusion_matrix
 from utils import misc_utils
 from main_multi_task import life_experience_iid, eval_iid_tasks
 
-import time
-
 # eval_class_tasks(model, tasks, args) : returns lists of avg losses after passing thru model
 # eval_tasks(model, tasks, args) : ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 # life_experience(model, inc_loader, args) : 
@@ -76,37 +74,41 @@ def eval_tasks(model, tasks, args):
     return result
 
 def life_experience(model, inc_loader, args):
+    # initializing logging lists
     result_val_a = []
     result_test_a = []
 
     result_val_t = []
     result_test_t = []
+    # initializing logging lists
 
     time_start = time.time()
+    # get the tasks for testing and validation
     test_tasks = inc_loader.get_tasks("test")
     val_tasks = inc_loader.get_tasks("val")
     
+    # evaluator is a function that returns the validation loss
     evaluator = eval_tasks
-    if args.loader == "class_incremental_loader":
-        evaluator = eval_class_tasks
+    # its different for class_incr_loader (TIMGNET & CIFAR) and task_incr_loader (MNIST)
+    if args.loader == "class_incremental_loader": evaluator = eval_class_tasks
 
     # print(time.asctime( time.localtime(time.time()) ))
 
-    for task_i in range(inc_loader.n_tasks):
+    for task_i in range(inc_loader.n_tasks): # usually 20 tasks
 
         # print(time.asctime( time.localtime(time.time()) ))
 
-        task_info, train_loader, _, _ = inc_loader.new_task()
+        task_info, train_loader, _, _ = inc_loader.new_task() # loads a bunch of training data
 
         # print(time.asctime( time.localtime(time.time()) ))
 
-        for ep in range(args.n_epochs):
+        for ep in range(args.n_epochs): # usually 1 epoch
 
             model.real_epoch = ep
 
             prog_bar = tqdm(train_loader)
             # print('entered ep', time.asctime( time.localtime(time.time()) )) # takes 1.5 mins
-            for (i, (x, y)) in enumerate(prog_bar):
+            for (i, (x, y)) in enumerate(prog_bar): # usually 300 => 3
                 # print('entering validation', time.asctime( time.localtime(time.time()) ))
                 # takes 7 seconds, but run only once every
                 # print(args.log_every)  # 3125
@@ -179,6 +181,7 @@ def save_results(args, result_val_t, result_val_a, result_test_t, result_test_a,
                 val_stats, one_liner, args), fname + '.pt')
     return val_stats, test_stats
 
+# sends the model, data_loader and hyperparams to life_experience(..), nothing more
 def main():
     # loads a lot of default parser values from the 'parser' file
     parser = file_parser.get_parser()
