@@ -84,7 +84,7 @@ class Net(BaseNet):
             self.zero_grads()
 
             # current_task=??
-            # t is task_info
+            # t is task_number
             if t != self.current_task:
                 # M=??
                 self.M = self.M_new

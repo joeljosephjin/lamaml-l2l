@@ -112,7 +112,7 @@ def life_experience(model, inc_loader, args):
 
             prog_bar = tqdm(train_loader)
             # print('entered ep', time.asctime( time.localtime(time.time()) )) # takes 1.5 mins
-            for (i, (x, y)) in enumerate(prog_bar): # usually 300 => 3
+            for (i, (x, y)) in enumerate(prog_bar): # usually 0 to 4
                 # print('entering validation', time.asctime( time.localtime(time.time()) ))
                 # takes 7 seconds, but run only once every
                 # print(args.log_every)  # 3125
@@ -124,10 +124,8 @@ def life_experience(model, inc_loader, args):
                 # print('entered val', time.asctime( time.localtime(time.time()) ))
 
                 v_x, v_y = x, y
-                if args.arch == 'linear':
-                    v_x = x.view(x.size(0), -1)
-                if args.cuda:
-                    v_x, v_y = v_x.cuda(), v_y.cuda()
+                if args.arch == 'linear': v_x = x.view(x.size(0), -1)
+                if args.cuda: v_x, v_y = v_x.cuda(), v_y.cuda()
 
                 model.train()
 
