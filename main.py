@@ -100,6 +100,10 @@ def life_experience(model, inc_loader, args):
 
         task_info, train_loader, _, _ = inc_loader.new_task() # loads a bunch of training data
 
+        # print(len(train_loader), task_info) # 5 
+        # {'min_class': 0, 'max_class': tensor(9), 'increment': -1, 'task': 0, 
+        # 'max_task': 20, 'n_train_data': 50, 'n_test_data': 10000}
+
         # print(time.asctime( time.localtime(time.time()) ))
 
         for ep in range(args.n_epochs): # usually 1 epoch
@@ -128,6 +132,7 @@ def life_experience(model, inc_loader, args):
                 model.train()
 
                 # print('finding loss', time.asctime( time.localtime(time.time()) ))
+                # print(len(v_x), task_info["task"]) # 10 0; 10 out of 50; 10 for each class
                 loss = model.observe(Variable(v_x), Variable(v_y), task_info["task"])  # takes 3 seconds
                 # print('found loss', time.asctime( time.localtime(time.time()) ))
 
