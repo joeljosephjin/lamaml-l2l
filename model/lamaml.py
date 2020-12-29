@@ -85,6 +85,7 @@ class Net(BaseNet):
 
             # current_task=??
             # t is task_number
+            # print('currt:', self.current_task, len(self.M_new)) # 0 {10,20,..,100}
             if t != self.current_task:
                 # M=??
                 self.M = self.M_new
