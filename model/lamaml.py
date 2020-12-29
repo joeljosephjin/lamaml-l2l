@@ -9,7 +9,7 @@ from model.lamaml_base import *
 
 
 # a subset of BaseNet containing the model, parameters, forward, backward, differentiation,etc..
-# BaseNet comes from "lamaml_base.py" 
+# BaseNet comes from "lamaml_base.py"
 class Net(BaseNet):
 
     def __init__(self, n_inputs, n_outputs, n_tasks, args):
@@ -44,10 +44,10 @@ class Net(BaseNet):
         # same usual finding y_pred
         logits = self.net.forward(x, fast_weights)
         # same usual finding loss without squeezing (i wonder why?)
-        loss = self.loss(logits, y)   
+        loss = self.loss(logits, y)
 
         # if no fast_weights use the params from the net
-        if fast_weights is None: fast_weights = self.net.parameters() 
+        if fast_weights is None: fast_weights = self.net.parameters()
 
         # NOTE if we want higher order grads to be allowed, change create_graph=False to True
         graph_required = self.args.second_order
@@ -66,18 +66,18 @@ class Net(BaseNet):
     # idk??
     def observe(self, x, y, t):
         # initialize for training, make use of batch norms, dropouts,etc..
-        self.net.train() 
+        self.net.train()
 
-        # glances??
+        # glances?? = 2
         for pass_itr in range(self.glances):
             # pass_itr is to be used in other funcs(of this class) ig
             self.pass_itr = pass_itr
-            
+
             # Returns a random permutation of integers from 0 to n - 1
             perm = torch.randperm(x.size(0))
             # selecting a random data tuple (x, y)
             x, y = x[perm], y[perm]
-            
+
             # so each it of this loop is an epoch
             self.epoch += 1
             # set {opt_lr, opt_wt, net, net.alpha_lr} (all 4) as zero_grads
@@ -92,17 +92,17 @@ class Net(BaseNet):
             # get batch_size from the shape of x
             batch_sz = x.shape[0]
             # will want to store batch loss in a list
-            meta_losses = [0 for _ in range(batch_sz)] 
+            meta_losses = [0 for _ in range(batch_sz)]
 
             # b_lisst <= {x,y,t} + sample(Memory)
             bx, by, bt = self.getBatch(x.cpu().numpy(), y.cpu().numpy(), t)
             fast_weights = None
-            
+
             # for each tuple in batch
             for i in range(batch_sz):
                 # squeeze the tuples
                 batch_x, batch_y = x[i].unsqueeze(0), y[i].unsqueeze(0)
-                
+
                 # do an inner update
                 fast_weights = self.inner_update(batch_x, fast_weights, batch_y, t)
 
@@ -110,10 +110,10 @@ class Net(BaseNet):
                 if(self.real_epoch == 0): self.push_to_mem(batch_x, batch_y, torch.tensor(t))
 
                 # get meta_loss and y_pred
-                meta_loss, logits = self.meta_loss(bx, fast_weights, by, t) 
+                meta_loss, logits = self.meta_loss(bx, fast_weights, by, t)
                 # collect meta_losses into a list
                 meta_losses[i] += meta_loss
-    
+
             # Taking the meta gradient step (will update the learning rates)
             self.zero_grads()
 
@@ -132,7 +132,7 @@ class Net(BaseNet):
 
             # update theta learning rate
             if(self.args.sync_update): self.opt_wt.step()
-            else: 
+            else:
                 # update the parameters in place
                 for i,p in enumerate(self.net.parameters()):
                     p.data = p.data - p.grad * nn.functional.relu(self.net.alpha_lr[i])
