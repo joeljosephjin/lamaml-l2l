@@ -91,7 +91,6 @@ class IncrementalLoader:
         self.n_outputs = n_outputs
         return n_inputs, n_outputs.item()+1, self.n_tasks
 
-
     def _get_loader(self, x, y, shuffle=True, mode="train"):
         if mode == "train":
             batch_size = self._batch_size

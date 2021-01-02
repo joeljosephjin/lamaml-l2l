@@ -13,14 +13,6 @@ from metrics.metrics import confusion_matrix
 from utils import misc_utils
 from main_multi_task import life_experience_iid, eval_iid_tasks
 
-# eval_class_tasks(model, tasks, args) : returns lists of avg losses after passing thru model
-# eval_tasks(model, tasks, args) : ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-# life_experience(model, inc_loader, args) : 
-# save_results(......) : 
-
-# def main():
-# if __name__=...
-
 # returns list of avg loss of each task
 def eval_class_tasks(model, tasks, args):
     # model.eval turns off dropouts, batchnorms. https://stackoverflow.com/questions/60018578/what-does-model-eval-do-in-pytorch
@@ -233,7 +225,6 @@ def main():
 
         # save results in files or print on terminal
         save_results(args, result_val_t, result_val_a, result_test_t, result_test_a, model, spent_time)
-
 
 if __name__ == "__main__":
     main()

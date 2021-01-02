@@ -39,7 +39,7 @@ class Net(BaseNet):
     # return an update of the fast weights
     def inner_update(self, x, fast_weights, y, t):
         """
-        Update the fast weights using the current samples and return the updated fast
+        Update the fast weights using the current samples and return the updated fast weights
         """
         # same usual finding y_pred
         logits = self.net.forward(x, fast_weights)
@@ -102,17 +102,19 @@ class Net(BaseNet):
             fast_weights = None
 
             # for each tuple in batch
-            for i in range(batch_sz):
+            for i in range(batch_sz): # i - {0,1,..,9}
                 # squeeze the tuples
                 batch_x, batch_y = x[i].unsqueeze(0), y[i].unsqueeze(0)
 
                 # do an inner update
+                # print(batch_x.shape) # torch.Size([1, 784])
+                # update fast_wts using current samples
                 fast_weights = self.inner_update(batch_x, fast_weights, batch_y, t)
 
                 # if real_epoch is zero, push the tuple to memory
                 if(self.real_epoch == 0): self.push_to_mem(batch_x, batch_y, torch.tensor(t))
 
-                # get meta_loss and y_pred
+                # get meta_loss and y_pred normally
                 meta_loss, logits = self.meta_loss(bx, fast_weights, by, t)
                 # collect meta_losses into a list
                 meta_losses[i] += meta_loss
@@ -138,6 +140,7 @@ class Net(BaseNet):
             else:
                 # update the parameters in place
                 for i,p in enumerate(self.net.parameters()):
+                    # w = w - del_w * |alpha_lr|
                     p.data = p.data - p.grad * nn.functional.relu(self.net.alpha_lr[i])
 
             # set zero_grad for net and alpha learning rate
@@ -145,3 +148,4 @@ class Net(BaseNet):
             self.net.alpha_lr.zero_grad()
 
         return meta_loss.item()
+

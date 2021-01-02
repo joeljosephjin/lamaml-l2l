@@ -78,7 +78,6 @@ class BaseNet(torch.nn.Module):
                 if p < self.memories:
                     self.M_new[p] = [batch_x[i], batch_y[i], t]
 
-
     def getBatch(self, x, y, t, batch_size=None):
         """
         Given the new data points, create a batch of old + new data, 
