@@ -215,7 +215,7 @@ def main():
     # create the model neural net
     model = Model.Net(n_inputs, n_outputs, n_tasks, args)
     # make model cuda-ized if possible
-    model.net.device(dev)
+    model.net.to(dev)
 
     # wandb.watch(model)
 
