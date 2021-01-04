@@ -51,6 +51,10 @@ def get_parser():
     # experiment parameters
     parser.add_argument('--cuda', default=False , action='store_true',
                         help='Use GPU')
+
+    parser.add_argument('--device',type=str , default='cpu',
+                        help='CPU, GPU or TPU?')
+
     parser.add_argument('--seed', type=int, default=0,
                         help='random seed of model')
     parser.add_argument('--log_every', type=int, default=1000,

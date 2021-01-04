@@ -11,6 +11,9 @@ import model.meta.modelfactory as mf
 from scipy.stats import pearsonr
 import datetime
 
+import torch_xla
+import torch_xla.core.xla_model as xm
+
 class BaseNet(torch.nn.Module):
 
     def __init__(self,
@@ -51,9 +54,11 @@ class BaseNet(torch.nn.Module):
         self.memories = args.memories
         self.batchSize = int(args.replay_batch_size)
 
-        self.cuda = args.cuda
-        if self.cuda:
-            self.net = self.net.cuda()
+        self.cuda = args.device
+        if self.cuda == 'tpu':
+            self.net = self.net.device(xm.xla_device())
+        else:
+            self.net = self.net.device('cpu')
 
         self.n_outputs = n_outputs
 
@@ -130,10 +135,14 @@ class BaseNet(torch.nn.Module):
         bts = Variable(torch.from_numpy(np.array(bts))).long().view(-1)
         
         # b_lists <= cuda-ize
-        if self.cuda:
-            bxs = bxs.cuda()
-            bys = bys.cuda()
-            bts = bts.cuda()
+        if self.cuda == 'tpu':
+            bxs = bxs.device(xm.xla_device())
+            bys = bys.device(xm.xla_device())
+            bts = bts.device(xm.xla_device())
+        else:
+            bxs = bxs.device(self.cuda)
+            bys = bys.device(self.cuda)
+            bts = bts.device(self.cuda)     
 
         return bxs,bys,bts
 
