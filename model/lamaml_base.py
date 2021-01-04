@@ -56,9 +56,9 @@ class BaseNet(torch.nn.Module):
 
         self.cuda = args.device
         if self.cuda == 'tpu':
-            self.net = self.net.device(xm.xla_device())
+            self.net = self.net.to(xm.xla_device())
         else:
-            self.net = self.net.device('cpu')
+            self.net = self.net.to('cpu')
 
         self.n_outputs = n_outputs
 
@@ -136,13 +136,13 @@ class BaseNet(torch.nn.Module):
         
         # b_lists <= cuda-ize
         if self.cuda == 'tpu':
-            bxs = bxs.device(xm.xla_device())
-            bys = bys.device(xm.xla_device())
-            bts = bts.device(xm.xla_device())
+            bxs = bxs.to(xm.xla_device())
+            bys = bys.to(xm.xla_device())
+            bts = bts.to(xm.xla_device())
         else:
-            bxs = bxs.device(self.cuda)
-            bys = bys.device(self.cuda)
-            bts = bts.device(self.cuda)     
+            bxs = bxs.to(self.cuda)
+            bys = bys.to(self.cuda)
+            bts = bts.to(self.cuda)     
 
         return bxs,bys,bts
 
