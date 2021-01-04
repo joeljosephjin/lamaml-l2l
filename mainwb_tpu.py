@@ -38,7 +38,7 @@ def eval_class_tasks(model, tasks, args):
         # for 
         for x, y in task_loader:
             # cuda-ize x if necessary
-            x = x.device(dev)
+            x = x.to(dev)
             # push x thru model and get p out
             _, p = torch.max(model(x, t).data.cpu(), 1, keepdim=False)
             # rt is the loss/error . its being compared with label y
@@ -70,7 +70,7 @@ def eval_tasks(model, tasks, args):
                 xb, yb = x[b_from:b_to], y[b_from:b_to]
 
             # cuda-ize xb if necessary
-            xb = xb.device(dev)
+            xb = xb.to(dev)
             _, pb = torch.max(model(xb, t).data.cpu(), 1, keepdim=False)
             # adding the loss each time to rt
             rt += (pb == yb).float().sum()
@@ -122,7 +122,7 @@ def life_experience(model, inc_loader, args):
                 # linearize the x i.e. image => list
                 if args.arch == 'linear': v_x = x.view(x.size(0), -1)
                 # cuda-ize the x and y
-                v_x, v_y = v_x.device(dev), v_y.device(dev)
+                v_x, v_y = v_x.to(dev), v_y.to(dev)
 
                 # init training session
                 model.train()
