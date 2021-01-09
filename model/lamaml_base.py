@@ -11,8 +11,8 @@ import model.meta.modelfactory as mf
 from scipy.stats import pearsonr
 import datetime
 
-import torch_xla
-import torch_xla.core.xla_model as xm
+# import torch_xla
+# import torch_xla.core.xla_model as xm
 
 class BaseNet(torch.nn.Module):
 
